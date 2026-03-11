@@ -328,6 +328,31 @@ When the user asks to set take-profit or stop-loss on an **existing futures posi
 Long BTC TP example: `{"symbol":"BTCUSDT","type":"take_profit","side":3,"trigger_price":"72000","executive_price":"0","price_type":1,"plan_category":2}`
 Long BTC SL example: `{"symbol":"BTCUSDT","type":"stop_loss","side":3,"trigger_price":"64000","executive_price":"0","price_type":1,"plan_category":2}`
 
+### Timestamp Display Rules
+
+API responses contain Unix timestamps in different units. When displaying any timestamp to the user, **always convert to human-readable local time**.
+
+| Field | Unit | Conversion |
+|-------|------|------------|
+| `create_time`, `update_time` (order responses) | Milliseconds | `÷ 1000` → Unix seconds → local time |
+| `server_time` (system time) | Milliseconds | `÷ 1000` → Unix seconds → local time |
+| `timestamp` (K-line candle open time) | Seconds | Direct → Unix seconds → local time |
+| `open_timestamp`, `funding_time` (contract details) | Milliseconds | `÷ 1000` → Unix seconds → local time |
+
+**Query parameter timestamps** for futures endpoints (`start_time`, `end_time`) are **endpoint-specific**:
+
+- **Seconds**: `/contract/public/kline`, `/contract/public/markprice-kline`, `/contract/private/order-history`, `/contract/private/trades`, and affiliate rebate endpoints (`/contract/private/affiliate/...`)
+- **Milliseconds**: `/contract/private/transaction-history`
+
+Do NOT assume all futures `start_time` / `end_time` are seconds — always follow the target endpoint definition.
+
+**Display format:** `YYYY-MM-DD HH:MM:SS` in the user's local timezone. Example: timestamp `1709971200000` (ms) → `2024-03-09 16:00:00` (UTC+8).
+
+**Common mistakes to avoid:**
+- Do NOT treat millisecond timestamps as seconds (produces dates in year 55000+)
+- Do NOT display raw numeric timestamps — always convert to readable format
+- Do NOT assume UTC — convert to the user's local timezone
+
 ### Step 2: Execute
 
 - **READ**: Call the API endpoint, parse response, format data for user display.

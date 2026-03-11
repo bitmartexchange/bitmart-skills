@@ -318,6 +318,25 @@ Parse user request and map to a READ or WRITE operation:
 - **READ** operations: market data, balance queries, order queries, fee rates
 - **WRITE** operations: place order, cancel order, batch orders
 
+### Timestamp Display Rules
+
+API responses contain Unix timestamps in different units. When displaying any timestamp to the user, **always convert to human-readable local time**.
+
+| Field | Unit | Conversion |
+|-------|------|------------|
+| `createTime`, `updateTime` (order responses) | Milliseconds | `÷ 1000` → Unix seconds → local time |
+| `server_time` (system time) | Milliseconds | `÷ 1000` → Unix seconds → local time |
+| `t` (K-line candle open time) | Seconds | Direct → Unix seconds → local time |
+| `create_time` (borrow records) | Seconds | Direct → Unix seconds → local time |
+| `repay_time` (repay records) | Seconds | Direct → Unix seconds → local time |
+
+**Display format:** `YYYY-MM-DD HH:MM:SS` in the user's local timezone. Example: timestamp `1700000000000` (ms) → `2023-11-15 06:13:20` (UTC+8).
+
+**Common mistakes to avoid:**
+- Do NOT treat millisecond timestamps as seconds (produces dates in year 55000+)
+- Do NOT display raw numeric timestamps — always convert to readable format
+- Do NOT assume UTC — convert to the user's local timezone
+
 ### Step 2: Execute
 
 - **READ**: Call the API endpoint, parse response, format data for user display.
