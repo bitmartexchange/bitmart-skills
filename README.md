@@ -201,7 +201,7 @@ We welcome contributions! To add a new skill:
 
 4. **Add reference documents** in a `references/` subfolder for complex sub-modules.
 
-5. **Open a Pull Request** to `main` for review.
+5. **Open a Pull Request** to `master` for review.
 
 ---
 

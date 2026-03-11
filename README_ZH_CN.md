@@ -201,7 +201,7 @@ bitmart-skills/
 
 4. 在 `references/` 子文件夹中**添加参考文档**，用于复杂的子模块。
 
-5. 向 `main` 分支**提交 Pull Request** 进行审核。
+5. 向 `master` 分支**提交 Pull Request** 进行审核。
 
 ---
 
