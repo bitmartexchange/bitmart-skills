@@ -51,7 +51,7 @@ Please type CONFIRM to proceed.
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","side":"buy","type":"market","notional":"100"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v2/submit_order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -76,7 +76,7 @@ Expected response:
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"orderId":"12345678901234567"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v4/query/order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -133,7 +133,7 @@ Please type CONFIRM to proceed.
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"ETH_USDT","side":"sell","type":"limit","size":"0.5","price":"4000"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v2/submit_order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -147,7 +147,7 @@ curl -s -X POST 'https://api-cloud.bitmart.com/spot/v2/submit_order' \
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"orderId":"ORDER_ID"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v4/query/order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -191,7 +191,7 @@ Please type CONFIRM to proceed.
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","orderParams":[{"side":"buy","type":"limit","size":"0.001","price":"60000"},{"side":"buy","type":"limit","size":"0.001","price":"59000"},{"side":"buy","type":"limit","size":"0.001","price":"58000"}]}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v4/batch_orders' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -207,7 +207,7 @@ For each returned `order_id`, query its status:
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"orderId":"ORDER_ID"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v4/query/order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -234,7 +234,7 @@ Report the status of all three orders.
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v4/query/open-orders' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -250,7 +250,7 @@ Find the order with `price: "60000"` and `side: "buy"`. If multiple matches, ask
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","order_id":"FOUND_ORDER_ID"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v3/cancel_order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -276,7 +276,7 @@ After confirmation:
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","side":"buy","type":"limit","size":"0.001","price":"59500"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v2/submit_order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -365,7 +365,7 @@ After confirmation:
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"ETH_USDT","currency":"USDT","amount":"1000"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v1/margin/isolated/borrow' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -379,7 +379,7 @@ curl -s -X POST 'https://api-cloud.bitmart.com/spot/v1/margin/isolated/borrow' \
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"ETH_USDT","side":"buy","type":"market","notional":"1000"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v1/margin/submit_order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -395,7 +395,7 @@ After the user is ready to close the margin position and repay:
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"ETH_USDT","currency":"USDT","amount":"1000"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v1/margin/isolated/repay' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \

@@ -14,8 +14,8 @@ These skills are designed to work with any AI agent framework. Whether you're us
 
 | Skill | Description | Version | Status |
 |-------|-------------|---------|--------|
-| [bitmart-exchange-spot](#-bitmart-exchange-spot) | Spot trading: buy/sell, order management, account queries, margin trading | `2026.3.10` | ✅ Active |
-| [bitmart-exchange-futures](#-bitmart-exchange-futures) | USDT perpetual futures: open/close position, TP/SL, plan orders, leverage | `2026.3.10` | ✅ Active |
+| [bitmart-exchange-spot](#-bitmart-exchange-spot) | Spot trading: buy/sell, order management, account queries, margin trading | `2026.3.13` | ✅ Active |
+| [bitmart-exchange-futures](#-bitmart-exchange-futures) | USDT perpetual futures: open/close position, TP/SL, plan orders, leverage | `2026.3.13` | ✅ Active |
 
 ---
 

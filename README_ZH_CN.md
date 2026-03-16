@@ -14,8 +14,8 @@ BitMart Skills 是一个开放的 Skills 市场，赋予 AI Agent 原生访问 B
 
 | Skill | 描述 | 版本 | 状态 |
 |-------|------|------|------|
-| [bitmart-exchange-spot](#-bitmart-exchange-spot) | 现货交易：买卖、订单管理、账户查询、保证金交易 | `2026.3.10` | ✅ 可用 |
-| [bitmart-exchange-futures](#-bitmart-exchange-futures) | USDT 永续合约：开平仓、止盈止损、计划委托、杠杆管理 | `2026.3.10` | ✅ 可用 |
+| [bitmart-exchange-spot](#-bitmart-exchange-spot) | 现货交易：买卖、订单管理、账户查询、保证金交易 | `2026.3.13` | ✅ 可用 |
+| [bitmart-exchange-futures](#-bitmart-exchange-futures) | USDT 永续合约：开平仓、止盈止损、计划委托、杠杆管理 | `2026.3.13` | ✅ 可用 |
 
 ---
 

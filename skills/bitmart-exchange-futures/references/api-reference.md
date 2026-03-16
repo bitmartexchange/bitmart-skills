@@ -92,7 +92,7 @@ curl -s 'https://api-cloud-v2.bitmart.com/contract/public/details?symbol=BTCUSDT
 | funding_time | Next funding settlement timestamp (ms) |
 | status | Contract status: `"Trading"` or `"Delisted"` |
 
-**Live verification (2026-03-10):** `GET /contract/public/details` returns both `vol_precision` and `funding_time` in JSON data. Official field-table text that says `volume_precision` is inconsistent with live payload.
+**Live verification (2026-03-13):** `GET /contract/public/details` returns both `vol_precision` and `funding_time` in JSON data. Official field-table text that says `volume_precision` is inconsistent with live payload.
 
 **Important:** Always check `contract_size`, `min_volume`, `max_volume`, `price_precision`, and `max_leverage` before placing orders.
 
@@ -633,6 +633,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 | unrealized_pnl | Unrealized profit/loss |
 | initial_margin | Initial margin used |
 | maintenance_margin | Maintenance margin required |
+| current_amount | Current position size (contracts, string, always ≥ 0). **Use this field to determine whether a position exists** (parse as number, check ≠ 0) |
 | position_amount | Current position direction amount (hedge mode: always positive; one-way mode: positive=long, negative=short) |
 | open_type | `"cross"` or `"isolated"` |
 | max_notional_value | Maximum notional value for current leverage |
@@ -707,7 +708,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
   'https://api-cloud-v2.bitmart.com/contract/private/get-position-mode'
 ```
 
-**Live verification (2026-03-10):** KEYED request (only `X-BM-KEY`) and SIGNED request both returned `code=1000`. Use KEYED as the minimum required auth level.
+**Live verification (2026-03-13):** KEYED request (only `X-BM-KEY`) and SIGNED request both returned `code=1000`. Use KEYED as the minimum required auth level.
 
 **Response:**
 ```json
@@ -802,7 +803,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":1,"type":"market","size":1,"leverage":"10","open_type":"cross"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -815,7 +816,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-order'
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":4,"type":"limit","price":"70000","size":10,"leverage":"20","open_type":"isolated","mode":1,"preset_take_profit_price":"68000","preset_stop_loss_price":"72000","preset_take_profit_price_type":1,"preset_stop_loss_price_type":1}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -855,7 +856,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-order'
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"23456789012345678"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -881,7 +882,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-order'
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-orders' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -911,7 +912,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-orders
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":23456789012345678,"price":"66500"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-limit-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -943,7 +944,7 @@ Sets a countdown timer. When the timer expires, all open orders for the specifie
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","timeout":60}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-all-after' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -974,7 +975,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-all-af
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","leverage":"20","open_type":"cross"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-leverage' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1007,7 +1008,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-levera
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"position_mode":"hedge_mode"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/set-position-mode' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1043,7 +1044,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/set-position-
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"currency":"USDT","amount":"1000","type":"spot_to_contract"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/v1/transfer-contract' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1090,7 +1091,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/v1/transfer-contract' 
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":1,"type":"market","size":10,"leverage":"10","open_type":"cross","trigger_price":"65000","price_way":2,"price_type":1}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-plan-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1121,7 +1122,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-plan-o
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"34567890123456789"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-plan-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1152,7 +1153,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-plan-o
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"34567890123456789","type":"market","trigger_price":"64000","price_type":1}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-plan-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1185,7 +1186,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-plan-o
 | executive_price | String | Yes | Execution price |
 | price_type | Int | Yes | 1=Last Price, 2=Mark Price |
 | size | Int | No | Order quantity (default: full position size) |
-| plan_category | Int | No | 1=TP/SL (default), 2=Position TP/SL |
+| plan_category | Int | No | 1=TP/SL, 2=Position TP/SL (default) |
 | client_order_id | String | No | Custom ID (1-32 chars) |
 | category | String | No | `"limit"` or `"market"` (default market for full position) |
 
@@ -1193,7 +1194,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-plan-o
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","type":"take_profit","side":3,"trigger_price":"72000","executive_price":"71900","price_type":1,"plan_category":2}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-tp-sl-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1206,7 +1207,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-tp-sl-
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","type":"stop_loss","side":2,"trigger_price":"72000","executive_price":"72100","price_type":1}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-tp-sl-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1248,7 +1249,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-tp-sl-
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"45678901234567890","trigger_price":"73000","price_type":1}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-tp-sl-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1284,7 +1285,7 @@ Modify the preset take-profit/stop-loss attached to an existing order.
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"23456789012345678","preset_take_profit_price":"73000","preset_stop_loss_price":"64000","preset_take_profit_price_type":1,"preset_stop_loss_price_type":1}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-preset-plan-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1323,7 +1324,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-preset
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":3,"leverage":"10","open_type":"cross","size":10,"activation_price":"72000","callback_rate":"2","activation_price_type":1}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-trail-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1358,7 +1359,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-trail-
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"56789012345678901"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-trail-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1638,7 +1639,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"page":1,"limit":20}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/v1/transfer-contract-list' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1695,7 +1696,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/v1/transfer-contract-l
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"requestNo":"550e8400-e29b-41d4-a716-446655440000","subAccount":"mysubuser","amount":"100","currency":"USDT"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/contract/sub-account/main/v1/sub-to-main' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1727,7 +1728,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/contract/sub-account/m
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"requestNo":"550e8400-e29b-41d4-a716-446655440001","subAccount":"mysubuser","amount":"100","currency":"USDT"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/contract/sub-account/main/v1/main-to-sub' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -1760,7 +1761,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/contract/sub-account/m
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"requestNo":"550e8400-e29b-41d4-a716-446655440002","amount":"100","currency":"USDT"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/contract/sub-account/sub/v1/sub-to-main' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -2210,7 +2211,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://demo-api-cloud-v2.bitmart.com/contract/private/claim' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \

@@ -55,7 +55,7 @@ Please type CONFIRM to proceed.
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":1,"trigger_price":"65000","type":"market","size":10,"leverage":"10","open_type":"cross","price_way":2,"price_type":1}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-plan-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -106,7 +106,7 @@ Not financial advice. Futures trading carries significant risk of loss.
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":1,"trigger_price":"72000","type":"limit","executive_price":"72100","size":10,"leverage":"10","open_type":"cross","price_way":1,"price_type":1,"mode":1}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-plan-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -160,7 +160,7 @@ Identify the order by trigger price or ask user for order ID if ambiguous.
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"34567890123456789","type":"market","trigger_price":"64000","price_type":1}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-plan-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -192,7 +192,7 @@ Query active plan orders and identify the target by trigger price.
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"34567890123456789"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-plan-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \

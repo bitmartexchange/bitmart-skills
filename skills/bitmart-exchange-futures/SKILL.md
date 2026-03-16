@@ -2,7 +2,7 @@
 name: bitmart-exchange-futures
 description: "Use when the user asks about BitMart futures or contract trading, including opening/closing positions, setting leverage, placing plan (conditional) orders, take-profit/stop-loss, trailing orders, checking futures positions, managing futures account, sub-account transfers, affiliate/rebate queries, or simulated trading. Do NOT use for spot trading (use bitmart-exchange-spot)."
 homepage: "https://www.bitmart.com"
-metadata: {"author":"bitmart","version":"2026.3.10","sdk_version":"1.4.0","updated":"2026-03-10"}
+metadata: {"author":"bitmart","version":"2026.3.13","sdk_version":"1.4.0","updated":"2026-03-13"}
 ---
 
 # BitMart Futures Trading
@@ -238,9 +238,11 @@ signature = HMAC-SHA256(secret_key, message) → hex string
 | `GET /system/service` | 10/sec | IP |
 
 **Rate limit response headers:**
-- `X-BM-RateLimit-Remaining` — Requests remaining in window
-- `X-BM-RateLimit-Limit` — Total allowed requests in window
-- `X-BM-RateLimit-Reset` — Seconds until window resets
+- `X-BM-RateLimit-Remaining` — Number of requests already used in the current window
+- `X-BM-RateLimit-Limit` — Maximum allowed requests in the current window
+- `X-BM-RateLimit-Reset` — Current time window length (seconds)
+
+**Warning:** If `X-BM-RateLimit-Remaining >= X-BM-RateLimit-Limit`, stop calling immediately and wait for reset to avoid sending one extra over-limit request.
 
 If rate limited (HTTP 429), wait for the reset period before retrying.
 
@@ -266,7 +268,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":1,"type":"market","size":1,"leverage":"10","open_type":"cross"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -295,13 +297,26 @@ Parse user request and map to a READ or WRITE operation:
 Before executing ANY of: open position (`POST /contract/private/submit-order` with side 1 or 4), set leverage (`POST /contract/private/submit-leverage`), or change margin mode:
 
 1. Call `GET /contract/private/position-v2?symbol=<SYMBOL>` to check for existing positions and current margin mode (`open_type`)
-2. **If an existing position is found (`current_amount != 0`):**
-   - **You MUST inherit** the existing `leverage` value — do NOT send a different leverage in the order
-   - **You MUST inherit** the existing `open_type` (margin mode: `cross` or `isolated`) — do NOT send a different margin mode
+2. Evaluate the entire `data[]` array returned by `position-v2` — do **not** assume there is only one row
+3. Parse each row's `current_amount` as a number before comparing it. The API returns string values such as `"0"`.
+4. **If any row's parsed `current_amount` is non-zero (existing position found):**
+   - **You MUST inherit** the relevant non-zero position row's `leverage` value — do NOT send a different leverage in the order
+   - **You MUST inherit** the relevant non-zero position row's `open_type` (margin mode: `cross` or `isolated`) — do NOT send a different margin mode
    - If the user explicitly requested different leverage or margin mode: **STOP** and warn:
      > "You have an existing [X]x [cross/isolated] [LONG/SHORT] position of [size] contracts. Changing leverage or margin mode while a position is open is commonly rejected by the API (for example, code 40012/40040). Please close the existing position first if you want to change these settings."
+   - Do **not** attempt to change `position_mode` while any non-zero position row exists
    - Wait for user decision before proceeding
-3. **If no existing position:** proceed with user-specified leverage and margin mode
+5. **If every row's parsed `current_amount` is 0:** proceed with user-specified leverage and margin mode
+6. If the request becomes **mode-sensitive** (for example, deciding whether to switch between `hedge_mode` and `one_way_mode`, or explaining current mode-dependent behavior), call `GET /contract/private/get-position-mode` before making that decision. Do not treat `get-position-mode` as a hard prerequisite for every plain open-position flow.
+
+### Step 1.55: Pre-Mode-Switch Clean-State Check (MANDATORY when changing position mode)
+
+`position_mode` is an account-wide setting. Before calling `POST /contract/private/set-position-mode`:
+
+1. Ensure Step 1.5 found **no** existing position (every row's parsed `current_amount` is `0`)
+2. Call `GET /contract/private/get-open-orders` and verify there are **no** open orders on the account
+3. If any open orders or other occupied state remain: **STOP** and ask the user to clear them before retrying the mode switch
+4. If `set-position-mode` returns `40059`, treat that as "account is not in a clean state for mode switching" and stop
 
 ### Step 1.6: TP/SL Order Parameter Rules (MANDATORY when setting TP/SL on a position)
 
@@ -321,7 +336,7 @@ When the user asks to set take-profit or stop-loss on an **existing futures posi
 | `trigger_price` | String | Activation price | Long TP: > entry; Long SL: < entry |
 | `executive_price` | String | `"0"` for market fill; or a limit price | |
 | `price_type` | Int | `1` last price / `2` mark price | Default: `1` |
-| `plan_category` | Int | `1` TP/SL order (default) / `2` Position TP/SL order | For existing-position TP/SL, use `2` |
+| `plan_category` | Int | `1` TP/SL order / `2` Position TP/SL order (default) | For existing-position TP/SL, use `2`. Omitting the field currently defaults to `2`, but sending `2` explicitly is clearer. |
 
 **Always submit TP and SL as two separate API calls.** One call for take-profit, one for stop-loss.
 
@@ -368,7 +383,7 @@ Do NOT assume all futures `start_time` / `end_time` are seconds — always follo
   | Close position, `type=market` (side=2 or 3) | `symbol`, `side`, `type:"market"`, `size` | `price`, `leverage`, `open_type` |
 
   Additional constraints:
-  - **`leverage` / `open_type` for open orders**: if an existing position is found (Step 1.5), use the existing position's values — do NOT send different ones.
+  - **`leverage` / `open_type` for open orders**: if an existing position is found (Step 1.5), use the relevant non-zero position row's values — do NOT send different ones.
   - **`mode=4` (Maker Only)**: only valid with `type=limit`. Never combine with `type=market`.
   - **`preset_take_profit_price` / `preset_stop_loss_price`**: only valid for opening orders (side=1 or 4). For TP/SL on an **already-open** position, use `submit-tp-sl-order` (see Step 1.6).
   - **`size` is always an integer** (number of contracts). Check the minimum contract size via `GET /contract/public/details`.
@@ -422,7 +437,8 @@ See `references/open-position.md`, `references/close-position.md`, `references/p
 | 1000 | Success | Process response normally |
 | 30002 | X-BM-KEY not found | Check that API key is set correctly |
 | 30005 | X-BM-SIGN is wrong | Verify signature generation (timestamp, memo, body format) |
-| 30007 | Timestamp/recvWindow validation failed | Sync system clock (NTP), send X-BM-TIMESTAMP as Unix milliseconds, and ensure (serverTime - timestamp) <= recvWindow; recvWindow must be Long in (0,60000], default 5000 (max 60000) |
+| 30006 | X-BM-TIMESTAMP is wrong | Ensure `X-BM-TIMESTAMP` is present and is a Unix timestamp in milliseconds |
+| 30007 | Timestamp/recvWindow validation failed | Sync system clock (NTP), send `X-BM-TIMESTAMP` as Unix milliseconds, and ensure `(serverTime - timestamp) <= recvWindow`; `recvWindow` must be Long in `(0,60000]`, default `5000` (max `60000`). For signed contract flows that expose `recvWindow`, rely on `recvWindow` as the effective request-validity window. |
 | 30010 | IP forbidden | Check API key IP whitelist settings |
 | 30013 | Rate limit exceeded | Wait for rate limit window to reset, then retry |
 | 40035 | Order not exist | Verify the order ID is correct and belongs to this account |
@@ -434,6 +450,18 @@ See `references/open-position.md`, `references/close-position.md`, `references/p
 | 40012 | Parameter/state conflict | Commonly appears when leverage/mode conflicts with current position/order state; query `GET /contract/private/position-v2` and inherit existing leverage + `open_type` |
 | 429 | HTTP rate limit | Back off exponentially, check `X-BM-RateLimit-Reset` header |
 | 418 | IP banned | Stop all requests immediately; wait before retrying |
+| 403 | Cloudflare WAF block | Check IP reputation (VPN/cloud IPs are commonly challenged); wait 30-60 seconds and retry; do not auto-retry more than 3 times |
+| 503 | Cloudflare challenge / origin unavailable | Same as 403; if response body contains "Cloudflare" or "cf-", it is a Cloudflare interception, not a BitMart error; check network environment |
+
+### Cloudflare Handling
+
+BitMart API is behind Cloudflare CDN. If you receive HTTP 403/503 and the response body contains "Cloudflare", "cf-", or an HTML challenge page (instead of JSON):
+
+1. This is a Cloudflare interception, not a BitMart API error — do not parse as JSON
+2. Check if too many requests were sent in a short window (Cloudflare WAF has its own rules independent of API rate limits)
+3. Wait 30-60 seconds before retrying
+4. If running from a cloud server or VPN, the IP may have low reputation — try from a different network
+5. Do not auto-retry more than 3 times — inform the user if the issue persists
 
 ---
 

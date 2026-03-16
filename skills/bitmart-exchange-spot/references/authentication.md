@@ -116,7 +116,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 # Example: 1709971200000#my_memo#{"symbol":"BTC_USDT","side":"buy","type":"limit","size":"0.001","price":"60000"}
 
 # Step 4: Generate HMAC-SHA256 signature
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 # Result: a hex string like "a1b2c3d4e5f6..."
 ```
 
@@ -130,7 +130,7 @@ TIMESTAMP=$(date +%s000)
 # For GET: body is empty, so message is "{timestamp}#{memo}#"
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#"
 
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 ```
 
 ### Required Headers
@@ -173,7 +173,7 @@ Expected successful response:
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v4/query/open-orders' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -192,8 +192,8 @@ If `code` is `1000`, your credentials are working correctly.
 |------------|---------|-------|-----|
 | 30002 | `X-BM-KEY not found` | API key header missing or empty | Verify `BITMART_API_KEY` env var is set. Check for typos in the header name `X-BM-KEY`. |
 | 30005 | `X-BM-SIGN is wrong` | Signature mismatch | 1) Verify memo matches exactly what you set on BitMart. 2) Ensure timestamp is in milliseconds. 3) For POST: body JSON must match exactly (no extra spaces). 4) For GET: body must be empty string. |
-| 30006 | `X-BM-TIMESTAMP is wrong` | Timestamp too far from server time | Ensure your system clock is synchronized. Timestamp must be within 30 seconds of server time. Run `date +%s000` and compare with server. |
-| 30007 | `Request header error` | Missing or malformed headers | Ensure all required headers are present: `X-BM-KEY`, `X-BM-SIGN`, `X-BM-TIMESTAMP`, and `Content-Type: application/json` for POST. |
+| 30006 | `X-BM-TIMESTAMP is wrong` | `X-BM-TIMESTAMP` header missing or empty | Ensure `X-BM-TIMESTAMP` is present on signed requests and uses Unix milliseconds (for example `date +%s000`). |
+| 30007 | `Timestamp/recvWindow validation failed` | Timestamp is outside the allowed `recvWindow`, or `recvWindow` is invalid | Sync your system clock, send `X-BM-TIMESTAMP` in Unix milliseconds, and for v4 endpoints ensure `recvWindow` is a Long in `(0,60000]` (default `5000`, max `60000`). Treat `recvWindow` as the effective validity window for current signed v4 requests. |
 | 30010 | `IP forbidden` | Request IP not in whitelist | Add your current IP to the API key whitelist on BitMart, or remove IP restriction for testing. |
 | 30011 | `No permission` | API key lacks required permission | Enable the required permission (Read-Only, Spot Trade) in API Management. |
 
@@ -201,7 +201,7 @@ If `code` is `1000`, your credentials are working correctly.
 
 1. **Memo mismatch**: The memo in your signature must match exactly what you entered when creating the API key. It is case-sensitive.
 
-2. **Timestamp drift**: If your system clock is more than 30 seconds off from BitMart's server, all signed requests will fail. Sync your clock:
+2. **Timestamp drift / recvWindow mismatch**: For signed v4 requests, BitMart validates `X-BM-TIMESTAMP` against `recvWindow` (default `5000ms`, maximum `60000ms`). In practice, use `recvWindow` as the request-validity source of truth. Keep your system clock synchronized, and increase `recvWindow` only when necessary:
    ```bash
    # macOS
    sudo sntp -sS time.apple.com

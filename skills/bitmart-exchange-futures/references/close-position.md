@@ -20,6 +20,7 @@ Expected response:
     {
       "symbol": "BTCUSDT",
       "leverage": "10",
+      "current_amount": "100",
       "position_amount": "100",
       "position_side": "long",
       "entry_price": "67000.0",
@@ -27,8 +28,7 @@ Expected response:
       "liquidation_price": "60500.0",
       "unrealized_pnl": "50.00",
       "initial_margin": "670.00",
-      "margin_type": "cross",
-      "position_mode": "hedge_mode"
+      "open_type": "cross"
     }
   ]
 }
@@ -69,10 +69,14 @@ Please type CONFIRM to proceed.
 
 ### Step 4: Submit close order (after user confirms)
 
+> **Note:** Close orders only require `symbol`, `side`, `type`, and `size`.
+> Do NOT include `leverage` or `open_type` — these fields are ignored for close orders and may cause confusion.
+> For limit close, add `price`. For partial close, use a smaller `size`.
+
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":3,"type":"market","size":100}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -99,7 +103,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
   'https://api-cloud-v2.bitmart.com/contract/private/position-v2?symbol=BTCUSDT'
 ```
 
-Verify the position no longer appears or `position_amount` is `"0"`.
+Verify the position no longer appears or the parsed `current_amount` is `0`.
 
 Also check the fill details:
 

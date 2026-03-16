@@ -1126,7 +1126,7 @@ curl -s "https://api-cloud.bitmart.com/spot/v1/margin/isolated/repay_record?symb
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","side":"buy","type":"limit","price":"60000.00","size":"0.001","client_order_id":"my_order_001"}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v2/submit_order" \
   -H "Content-Type: application/json" \
@@ -1185,7 +1185,7 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v2/submit_order" \
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","side":"buy","type":"limit","price":"60000.00","size":"0.001","clientOrderId":"margin_order_001"}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/submit_order" \
   -H "Content-Type: application/json" \
@@ -1250,7 +1250,7 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/submit_order" \
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","orderParams":[{"side":"buy","type":"limit","price":"60000.00","size":"0.001","clientOrderId":"batch_001"},{"side":"sell","type":"limit","price":"70000.00","size":"0.001","clientOrderId":"batch_002"}],"recvWindow":5000}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/batch_orders" \
   -H "Content-Type: application/json" \
@@ -1309,7 +1309,7 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/batch_orders" \
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","order_id":"1234567890"}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v3/cancel_order" \
   -H "Content-Type: application/json" \
@@ -1325,7 +1325,7 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v3/cancel_order" \
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","client_order_id":"my_order_001"}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v3/cancel_order" \
   -H "Content-Type: application/json" \
@@ -1377,7 +1377,7 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v3/cancel_order" \
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","orderIds":["1234567890","1234567891","1234567892"]}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/cancel_orders" \
   -H "Content-Type: application/json" \
@@ -1435,7 +1435,7 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/cancel_orders" \
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","side":"buy"}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/cancel_all" \
   -H "Content-Type: application/json" \
@@ -1490,7 +1490,7 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/cancel_all" \
 TIMESTAMP=$(date +%s000)
 BODY='{"orderId":"1234567890","queryState":"open","recvWindow":5000}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/order" \
   -H "Content-Type: application/json" \
@@ -1575,7 +1575,7 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/order" \
 TIMESTAMP=$(date +%s000)
 BODY='{"clientOrderId":"my_order_001","queryState":"open","recvWindow":5000}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/client-order" \
   -H "Content-Type: application/json" \
@@ -1643,7 +1643,7 @@ Same format as [endpoint 24](#24-query-order-by-order-id).
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","orderMode":"spot","limit":50,"recvWindow":5000}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/open-orders" \
   -H "Content-Type: application/json" \
@@ -1715,7 +1715,7 @@ Array of order objects. Each order has the same fields as [endpoint 24](#24-quer
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","orderMode":"spot","limit":50,"recvWindow":5000}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/history-orders" \
   -H "Content-Type: application/json" \
@@ -1787,7 +1787,7 @@ Array of order objects. Each order has the same fields as [endpoint 24](#24-quer
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","orderMode":"spot","limit":20,"recvWindow":5000}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/trades" \
   -H "Content-Type: application/json" \
@@ -1871,7 +1871,7 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/trades" \
 TIMESTAMP=$(date +%s000)
 BODY='{"orderId":"1234567880","recvWindow":5000}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/order-trades" \
   -H "Content-Type: application/json" \
@@ -1939,7 +1939,7 @@ Same format as [endpoint 28](#28-account-trade-history).
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","currency":"USDT","amount":"10000"}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/isolated/borrow" \
   -H "Content-Type: application/json" \
@@ -1992,7 +1992,7 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/isolated/borrow" \
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","currency":"USDT","amount":"10001"}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/isolated/repay" \
   -H "Content-Type: application/json" \
@@ -2046,7 +2046,7 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/isolated/repay" \
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","currency":"USDT","amount":"5000","side":"in"}'
 MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
-SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/isolated/transfer" \
   -H "Content-Type: application/json" \
@@ -2079,11 +2079,14 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/isolated/transfer"
 
 # Quick Reference: Error Codes
 
+Spot business error codes are endpoint/version specific. Do **not** assume the same numeric code has the same meaning across all spot flows. The table below is limited to authentication / transport issues and a small set of common current order-query errors that are useful across this guide. For margin borrow / repay / transfer errors, rely on the endpoint section and the official business-code table rather than a global mapping.
+
 | Code | Meaning |
 |------|---------|
 | `1000` | Success |
 | `30002` | Header X-BM-KEY not found (authentication) |
 | `30005` | Header X-BM-SIGN is wrong (authentication) |
+| `30006` | Header X-BM-TIMESTAMP is wrong / missing (authentication) |
 | `30007` | Timestamp/recvWindow validation failed (authentication) |
 | `30010` | IP is forbidden (authentication) |
 | `30011` | API key expired (authentication) |
@@ -2093,20 +2096,22 @@ curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/isolated/transfer"
 | `50001` | Symbol not found |
 | `50002` | From Or To format error |
 | `50004` | Kline size over 500 |
-| `50005` | Order Id not found |
+| `50005` | Order Id not found / query returned no data |
 | `50006` | Minimum size is %s |
 | `50007` | Maximum size is %s |
 | `50008` | Minimum price is %s |
-| `51000` | Insufficient balance |
-| `51001` | Symbol not found or not trading |
-| `51003` | Order not found |
-| `51004` | Order already cancelled |
-| `51006` | Order size below minimum |
-| `51007` | Order price out of range |
-| `51009` | Too many open orders |
-| `53000` | Margin account not activated |
-| `53001` | Margin borrowing not enabled |
-| `53002` | Insufficient margin balance |
+| `50021` | Market buy No size required / param error |
+| `51011` | Limit order quantity * price below minimum transaction amount |
+| `51012` | Market buy amount below minimum transaction amount |
+| `52000` | Unsupported OrderMode Type |
+
+**Margin-only / endpoint-specific business-code examples (non-global):**
+
+| Code | Meaning | Notes |
+|------|---------|-------|
+| `51003` | Account Limit | Use in margin borrow / repay / transfer context; do not use as a generic v4 order-query error |
+| `51006` | Exceeds the amount to be repaid | Isolated margin repay context |
+| `51007` | order_mode not found | Official business-code-table entry; current invalid `orderMode` requests on v4 query endpoints return `52000` instead |
 
 ---
 

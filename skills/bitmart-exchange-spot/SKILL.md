@@ -2,7 +2,7 @@
 name: bitmart-exchange-spot
 description: "Use when the user asks about BitMart spot trading, including buying or selling crypto, placing limit or market orders, checking spot balance, querying open orders, viewing trade history, or managing margin positions. Do NOT use for futures/contract trading (use bitmart-exchange-futures)."
 homepage: "https://www.bitmart.com"
-metadata: {"author":"bitmart","version":"2026.3.10","sdk_version":"1.4.0","updated":"2026-03-10"}
+metadata: {"author":"bitmart","version":"2026.3.13","sdk_version":"1.4.0","updated":"2026-03-13"}
 ---
 
 # BitMart Spot Trading
@@ -130,14 +130,15 @@ See `references/authentication.md` for full setup guide and troubleshooting.
 **Error:**
 ```json
 {
-  "code": 51003,
-  "message": "Account Limit",
+  "code": 50000,
+  "message": "Bad Request",
   "trace": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "data": null
 }
 ```
 
 **Important:** `code == 1000` means success. Any other code is an error.
+**Important:** Spot business error codes are endpoint/version specific. Do **not** assume the same numeric code has the same meaning across all spot flows.
 
 **GET requests:** Parameters go in the query string.
 **POST requests:** Parameters go in the JSON body.
@@ -181,7 +182,7 @@ See `references/authentication.md` for full setup guide and troubleshooting.
 - `X-BM-RateLimit-Limit` — Maximum allowed requests in the current window
 - `X-BM-RateLimit-Reset` — Current time window length (seconds)
 
-**Warning:** If `X-BM-RateLimit-Remaining > X-BM-RateLimit-Limit`, stop calling immediately to avoid ban.
+**Warning:** If `X-BM-RateLimit-Remaining >= X-BM-RateLimit-Limit`, stop calling immediately and wait for reset to avoid sending one extra over-limit request.
 
 If rate limited (HTTP 429), wait for the reset period before retrying.
 
@@ -207,7 +208,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 ```bash
 TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","side":"buy","type":"limit","size":"0.001","price":"60000"}'
-SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $2}')
+SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v2/submit_order' \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
@@ -221,6 +222,7 @@ curl -s -X POST 'https://api-cloud.bitmart.com/spot/v2/submit_order' \
 ## API Reference
 
 See `references/api-reference.md` for full endpoint documentation with parameters, examples, and response formats.
+See `references/scenarios.md` for step-by-step execution flows for common spot tasks such as market buy, limit sell, batch orders, and cancel-replace.
 
 ---
 
@@ -413,24 +415,43 @@ API responses contain Unix timestamps in different units. When displaying any ti
 
 ## Error Handling
 
+Spot business error codes are endpoint/version specific. Use the table below for authentication / transport issues and common current spot order-query behavior. For margin borrow / repay / transfer flows, see the margin-only notes after the table.
+
 | Code | Description | Action |
 |------|-------------|--------|
 | 1000 | Success | Process response normally |
 | 30002 | X-BM-KEY not found | Check that API key is set correctly |
 | 30005 | X-BM-SIGN is wrong | Verify signature generation (timestamp, memo, body format) |
-| 30007 | Timestamp/recvWindow validation failed | Sync system clock (NTP), send X-BM-TIMESTAMP as Unix milliseconds, and ensure (serverTime - timestamp) <= recvWindow; recvWindow must be Long in (0,60000], default 5000 (max 60000) |
+| 30006 | X-BM-TIMESTAMP is wrong | Ensure `X-BM-TIMESTAMP` is present and is a Unix timestamp in milliseconds |
+| 30007 | Timestamp/recvWindow validation failed | Sync system clock (NTP), send `X-BM-TIMESTAMP` as Unix milliseconds, and ensure `(serverTime - timestamp) <= recvWindow`; `recvWindow` must be Long in `(0,60000]`, default `5000` (max `60000`). For current signed v4 flows, rely on `recvWindow` as the effective request-validity window. |
 | 30010 | IP forbidden | Check API key IP whitelist settings |
 | 30013 | Rate limit exceeded | Wait for rate limit window to reset, then retry |
-| 51003 | Account Limit | Reduce borrow/repay/transfer scope or verify account restrictions |
-| 51006 | Exceeds the amount to be repaid | Ensure repay amount is not greater than outstanding principal + interest |
-| 51007 | order_mode not found | Use a valid `orderMode` value (`spot` or `iso_margin`) on v4 query endpoints |
+| 50005 | Order Id not found / query returned no data | On `POST /spot/v4/query/order`, a missing `orderId` / `clientOrderId` currently returns this code |
 | 50021 | param error | For `market` buy, use `notional` (USDT amount) — do NOT use `size`; `size` is silently ignored and causes this error |
 | 51011 | param not match : size * price >= X | Read symbol constraints from `GET /spot/v1/symbols/details`; enforce side-specific minimum notional (`min_buy_amount`/`min_sell_amount`) |
 | 51012 | below minimum order amount | `notional` (for market buy) or `size * price` (for limit) is below `min_buy_amount`; increase order value to at least the symbol minimum |
+| 52000 | Unsupported OrderMode Type | On current v4 query endpoints, use a valid `orderMode` (`spot` / `iso_margin`) or omit the field to query all modes |
 | 40044 | Invalid order size | Call `GET /spot/v1/symbols/details`; use symbol precision/increment fields and truncate (not round) `size` and `price` |
 | 50023 | Operation is limited | Pair may not support API trading; use a different pair |
 | 429 | HTTP rate limit | Back off exponentially, check `X-BM-RateLimit-Reset` header |
 | 418 | IP banned | Stop all requests immediately; wait before retrying |
+
+**Margin-only business codes (do not treat as global spot codes):**
+- `51003` — `Account Limit`. Use in margin borrow / repay / transfer context; do **not** use as the generic “order not found” code for v4 order-query flows.
+- `51006` — `Exceeds the amount to be repaid`. Use for isolated margin repay flows.
+- `51007` — `order_mode not found` in the official business-code table. Do **not** use this as guidance for current v4 query endpoints; invalid `orderMode` requests currently return `52000`.
+| 403 | Cloudflare WAF block | Check IP reputation (VPN/cloud IPs are commonly challenged); wait 30-60 seconds and retry; do not auto-retry more than 3 times |
+| 503 | Cloudflare challenge / origin unavailable | Same as 403; if response body contains "Cloudflare" or "cf-", it is a Cloudflare interception, not a BitMart error; check network environment |
+
+### Cloudflare Handling
+
+BitMart API is behind Cloudflare CDN. If you receive HTTP 403/503 and the response body contains "Cloudflare", "cf-", or an HTML challenge page (instead of JSON):
+
+1. This is a Cloudflare interception, not a BitMart API error — do not parse as JSON
+2. Check if too many requests were sent in a short window (Cloudflare WAF has its own rules independent of API rate limits)
+3. Wait 30-60 seconds before retrying
+4. If running from a cloud server or VPN, the IP may have low reputation — try from a different network
+5. Do not auto-retry more than 3 times — inform the user if the issue persists
 
 ---
 
