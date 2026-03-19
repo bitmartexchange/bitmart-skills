@@ -16,6 +16,7 @@ BitMart Skills 是一个开放的 Skills 市场，赋予 AI Agent 原生访问 B
 |-------|------|------|------|
 | [bitmart-exchange-spot](#-bitmart-exchange-spot) | 现货交易：买卖、订单管理、账户查询、保证金交易 | `2026.3.13` | ✅ 可用 |
 | [bitmart-exchange-futures](#-bitmart-exchange-futures) | USDT 永续合约：开平仓、止盈止损、计划委托、杠杆管理 | `2026.3.13` | ✅ 可用 |
+| [bitmart-wallet-ai](#-bitmart-wallet-ai) | Web3 钱包：代币搜索、行情数据、聪明钱追踪、地址余额查询、地址近期交易、兑换报价（无需 API Key） | `2026.3.17` | ✅ 可用 |
 
 ---
 
@@ -45,6 +46,22 @@ BitMart USDT 永续合约交易。支持开仓/平仓、杠杆管理、计划委
 - `平掉我所有 ETH 空头仓位`
 - `给我的 BTC 仓位设置止盈 70000、止损 58000`
 - `设置一个计划委托，ETH 跌到 3000 时买入`
+
+---
+
+## 💰 bitmart-wallet-ai
+
+> **Path**: `skills/bitmart-wallet-ai/`
+
+BitMart Web3 钱包能力，覆盖 7 条链（Solana、BSC、Ethereum、Arbitrum、Polygon、Optimism、Base）。支持代币搜索、链详情、K 线图表、热门代币和美股映射代币排行、聪明钱盈亏排行及地址分析、地址余额查询、**地址近期交易**、代币兑换报价和批量价格查询。**无需 API Key** —— 所有接口均支持直接 HTTP POST 请求。
+
+**示例提示词**：
+- `查询 Solana 上 TRUMP 的价格`
+- `显示近 7 天盈利最高的聪明钱地址`
+- `查询地址 0x4396... 在 BSC 上的代币余额`
+- `查询地址 2h4hhjuWxEo4uyzGAxzWvpdSotAozchjpfyefvVWvi8R 在 Solana 上的近期交易`
+- `在 Solana 上用 100 USDT 能换多少 SOL？`
+- `最近 24 小时的热门代币有哪些？`
 
 ---
 
@@ -151,15 +168,18 @@ bitmart-skills/
     │       ├── api-reference.md
     │       ├── authentication.md
     │       └── scenarios.md
-    └── bitmart-exchange-futures/          # 合约交易 Skill
+    ├── bitmart-exchange-futures/          # 合约交易 Skill
+    │   ├── SKILL.md
+    │   ├── README.md
+    │   └── references/
+    │       ├── api-reference.md
+    │       ├── open-position.md
+    │       ├── close-position.md
+    │       ├── plan-order.md
+    │       └── tp-sl.md
+    └── bitmart-wallet-ai/                 # Web3 钱包 Skill（无需 API Key）
         ├── SKILL.md
-        ├── README.md
-        └── references/
-            ├── api-reference.md
-            ├── open-position.md
-            ├── close-position.md
-            ├── plan-order.md
-            └── tp-sl.md
+        └── README.md
 ```
 
 ---

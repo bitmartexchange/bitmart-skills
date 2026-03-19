@@ -16,6 +16,7 @@ These skills are designed to work with any AI agent framework. Whether you're us
 |-------|-------------|---------|--------|
 | [bitmart-exchange-spot](#-bitmart-exchange-spot) | Spot trading: buy/sell, order management, account queries, margin trading | `2026.3.13` | ✅ Active |
 | [bitmart-exchange-futures](#-bitmart-exchange-futures) | USDT perpetual futures: open/close position, TP/SL, plan orders, leverage | `2026.3.13` | ✅ Active |
+| [bitmart-wallet-ai](#-bitmart-wallet-ai) | Web3 Wallet: token search, market data, smart money tracking, address balances, recent transactions, swap quotes (no API key required) | `2026.3.17` | ✅ Active |
 
 ---
 
@@ -45,6 +46,22 @@ USDT perpetual futures trading on BitMart. Supports opening/closing positions, l
 - `Close all my ETH short positions`
 - `Set take-profit at 70000 and stop-loss at 58000 for my BTC position`
 - `Place a plan order to buy ETH when it drops to 3000`
+
+---
+
+## 💰 bitmart-wallet-ai
+
+> **Path**: `skills/bitmart-wallet-ai/`
+
+BitMart Web3 Wallet capabilities across 7 chains (Solana, BSC, Ethereum, Arbitrum, Polygon, Optimism, Base). Includes token search, chain details, K-line charts, hot token & xStock rankings, smart money P&L rankings and address analysis, address balance queries, **address recent transactions**, token swap quotes, and batch price queries. **No API key required** — all endpoints accept direct HTTP POST requests.
+
+**Example Prompts**:
+- `What's the price of TRUMP on Solana?`
+- `Show me the top smart money wallets by 7-day profit`
+- `Check token balances for address 0x4396... on BSC`
+- `Check recent transactions for address 2h4hhjuWxEo4uyzGAxzWvpdSotAozchjpfyefvVWvi8R on Solana`
+- `How much SOL do I get for swapping 100 USDT on Solana?`
+- `What are the hot tokens in the last 24 hours?`
 
 ---
 
@@ -151,15 +168,18 @@ bitmart-skills/
     │       ├── api-reference.md
     │       ├── authentication.md
     │       └── scenarios.md
-    └── bitmart-exchange-futures/          # Futures trading skill
+    ├── bitmart-exchange-futures/          # Futures trading skill
+    │   ├── SKILL.md
+    │   ├── README.md
+    │   └── references/
+    │       ├── api-reference.md
+    │       ├── open-position.md
+    │       ├── close-position.md
+    │       ├── plan-order.md
+    │       └── tp-sl.md
+    └── bitmart-wallet-ai/                 # Web3 Wallet skill (no API key required)
         ├── SKILL.md
-        ├── README.md
-        └── references/
-            ├── api-reference.md
-            ├── open-position.md
-            ├── close-position.md
-            ├── plan-order.md
-            └── tp-sl.md
+        └── README.md
 ```
 
 ---
