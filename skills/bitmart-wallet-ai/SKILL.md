@@ -17,8 +17,6 @@ This document describes the BitMart Web3 Wallet capabilities exposed as AI skill
 | 2002 | BSC (BNB Smart Chain) | BNB |
 | 2003 | Ethereum | ETH |
 | 2004 | Arbitrum | ETH |
-| 2005 | Polygon | POL |
-| 2006 | Optimism | OP |
 | 2007 | Base | ETH |
 
 ## API Overview
@@ -27,7 +25,7 @@ This document describes the BitMart Web3 Wallet capabilities exposed as AI skill
 - **Authentication**: No API Key required, send HTTP requests directly
 - **Request Method**: POST, JSON body
 - **Response Format**: `{ "success": bool, "code": "string", "message": "string", "data": ... }`
-- **Request Limit**: 40 requests per second per IP，or you would be rate limited
+- **Request Limit**: 15 requests per second per IP，or you would be rate limited
 
 | Endpoint | Path | Description |
 | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------ |
@@ -82,8 +80,6 @@ This is how different endpoints handle native token addresses:
 | 2002 | BSC | `""` (empty) |
 | 2003 | Ethereum | `""` (empty) |
 | 2004 | Arbitrum | `""` (empty) |
-| 2005 | Polygon | `""` (empty) |
-| 2006 | Optimism | `""` (empty) |
 | 2007 | Base | `""` (empty) |
 
 #### tokenAddress field returned by address-balance
@@ -103,7 +99,7 @@ Native tokens on all chains return `""` (empty string).
 
 ### 5. Address Balance Query
 
-`chainId` is a **required parameter**. If the user does not specify a chain, must query all supported chains (2001-2007).
+`chainId` is a **required parameter**. If the user does not specify a chain, must query all supported chains (2001-2004, 2007).
 
 ---
 
@@ -218,7 +214,7 @@ Get token balance list for an address.
 | Parameter | Type | Required | Description |
 | ------------ | ------- | -------- | --------------------------------------------- |
 | address | string | Yes | Wallet address |
-| chainId | integer | **Yes** | Platform internal chain ID (must iterate 2001-2007 for complete info) |
+| chainId | integer | **Yes** | Platform internal chain ID (must iterate 2001-2004, 2007 for complete info) |
 | pageIndex | integer | No | Page number, starting from 0 |
 | pageSize | integer | No | Page size |
 
@@ -259,7 +255,7 @@ Get recent transactions for an address, grouped by date.
 **Important Notes:**
 - When `tokenAddress` is `null`, the API returns transactions for **all tokens** associated with the address on the specified chain.
 - The API returns up to **the most recent 6 months** of data by default. There is no parameter to specify a custom date range.
-- `chainId` is **required** for each address-chain pair. If the user does not specify a chain, the agent **must enumerate all supported chains** (2001–2007) and query each one separately.
+- `chainId` is **required** for each address-chain pair. If the user does not specify a chain, the agent **must enumerate all supported chains** (2001–2004, 2007) and query each one separately.
 
 **Response — Top-level:**
 
@@ -359,20 +355,20 @@ Get token Swap price quote. **Quote only, does not execute transaction.**
 Batch query token prices.
 
 **Note:**
-- For native tokens (e.g., SOL, BNB, ETH, MATIC, OP, BASE), use chain IDs (e.g., 2001, 2002, 2003, 2005, 2006, 2007) as `tokenIds`
+- For native tokens (e.g., SOL, BNB, ETH, ARB, BASE), use chain IDs (e.g., 2001, 2002, 2003, 2004, 2007) as `tokenIds`
 - For contract tokens, use the specific tokenId (obtained via token-search first)
 
 **Request:**
 ```json
 {
-    "tokenIds": [2002, 2003, 2004, 2005, 2006, 2001, 2007],
+    "tokenIds": [2001, 2002, 2003, 2004, 2007],
     "latestOnly": true
 }
 ```
 
 | Parameter | Type | Required | Description |
 | ------------ | ------- | -------- | --------------------------------------------- |
-| tokenIds | array | Yes | Platform internal chain ID array (2001=Solana, 2002=BSC, 2003=Ethereum, 2004=Arbitrum, 2005=Polygon, 2006=Optimism, 2007=Base) |
+| tokenIds | array | Yes | Platform internal chain ID array (2001=Solana, 2002=BSC, 2003=Ethereum, 2004=Arbitrum, 2007=Base) |
 | latestOnly | boolean | No | Whether to return only latest price, default true |
 
 **Response Key Fields:**
@@ -392,8 +388,6 @@ Batch query token prices.
 | 2002 | 2002 | BNB | BNB |
 | 2003 | 2003 | ETH | Ethereum |
 | 2004 | 2004 | ARB | Arbitrum |
-| 2005 | 2005 | MATIC | Polygon |
-| 2006 | 2006 | OP | Optimism |
 | 2007 | 2007 | BASE | Base |
 
 ---
