@@ -91,7 +91,7 @@ Native tokens on all chains return `""` (empty string).
 | Chain | Input Method | API Return Value |
 |-------|--------------|------------------|
 | **Solana** | Must use `So11111111111111111111111111111111111111111` | Kept as is |
-| **EVM Chains** (ETH/BSC/ARB/OP/POL/Base) | Pass `""` empty string | Converted to `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` |
+| **EVM Chains** (ETH/BSC/ARB/Base) | Pass `""` empty string | Converted to `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` |
 
 **Key Conclusions:**
 - When swapping native tokens on EVM chains, pass empty string `""` for `tokenAddress`

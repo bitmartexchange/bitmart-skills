@@ -53,7 +53,7 @@ BitMart USDT 永续合约交易。支持开仓/平仓、杠杆管理、计划委
 
 > **Path**: `skills/bitmart-wallet-ai/`
 
-BitMart Web3 钱包能力，覆盖 7 条链（Solana、BSC、Ethereum、Arbitrum、Polygon、Optimism、Base）。支持代币搜索、链详情、K 线图表、热门代币和美股映射代币排行、聪明钱盈亏排行及地址分析、地址余额查询、**地址近期交易**、代币兑换报价和批量价格查询。**无需 API Key** —— 所有接口均支持直接 HTTP POST 请求。
+BitMart Web3 钱包能力，覆盖 5 条链（Solana、BSC、Ethereum、Arbitrum、Base）。支持代币搜索、链详情、K 线图表、热门代币和美股映射代币排行、聪明钱盈亏排行及地址分析、地址余额查询、**地址近期交易**、代币兑换报价和批量价格查询。**无需 API Key** —— 所有接口均支持直接 HTTP POST 请求。
 
 **示例提示词**：
 - `查询 Solana 上 TRUMP 的价格`

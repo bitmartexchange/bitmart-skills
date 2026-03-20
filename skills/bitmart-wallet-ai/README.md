@@ -1,11 +1,11 @@
 # bitmart-wallet-ai
 
-BitMart Web3 Wallet skill for AI agents — token search, market data, smart money tracking, address balances, and swap quotes across 7 chains.
+BitMart Web3 Wallet skill for AI agents — token search, market data, smart money tracking, address balances, and swap quotes across 5 chains.
 
 ## Capabilities
 
 - **Token Search**: Fuzzy search tokens by name or symbol across supported chains
-- **Chain Details**: Query chain information by chain ID (Solana, BSC, Ethereum, Arbitrum, Polygon, Optimism, Base)
+- **Chain Details**: Query chain information by chain ID (Solana, BSC, Ethereum, Arbitrum, Base)
 - **Token Info**: Get complete token details by platform token ID
 - **K-Line Chart**: Historical candlestick data (Solana tokens only)
 - **Hot Token Ranking**: Trending token rankings by time window
@@ -25,8 +25,6 @@ BitMart Web3 Wallet skill for AI agents — token search, market data, smart mon
 | BSC | 2002 |
 | Ethereum | 2003 |
 | Arbitrum | 2004 |
-| Polygon | 2005 |
-| Optimism | 2006 |
 | Base | 2007 |
 
 ## API Endpoints
@@ -46,7 +44,7 @@ No API key required. All endpoints accept direct HTTP POST requests.
 
 ## Rate Limit
 
-40 requests per second per IP.
+15 requests per second per IP.
 
 ## Usage
 

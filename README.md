@@ -53,7 +53,7 @@ USDT perpetual futures trading on BitMart. Supports opening/closing positions, l
 
 > **Path**: `skills/bitmart-wallet-ai/`
 
-BitMart Web3 Wallet capabilities across 7 chains (Solana, BSC, Ethereum, Arbitrum, Polygon, Optimism, Base). Includes token search, chain details, K-line charts, hot token & xStock rankings, smart money P&L rankings and address analysis, address balance queries, **address recent transactions**, token swap quotes, and batch price queries. **No API key required** — all endpoints accept direct HTTP POST requests.
+BitMart Web3 Wallet capabilities across 5 chains (Solana, BSC, Ethereum, Arbitrum, Base). Includes token search, chain details, K-line charts, hot token & xStock rankings, smart money P&L rankings and address analysis, address balance queries, **address recent transactions**, token swap quotes, and batch price queries. **No API key required** — all endpoints accept direct HTTP POST requests.
 
 **Example Prompts**:
 - `What's the price of TRUMP on Solana?`
