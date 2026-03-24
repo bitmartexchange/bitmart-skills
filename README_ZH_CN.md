@@ -14,9 +14,9 @@ BitMart Skills 是一个开放的 Skills 市场，赋予 AI Agent 原生访问 B
 
 | Skill | 描述 | 版本 | 状态 |
 |-------|------|------|------|
-| [bitmart-exchange-spot](#-bitmart-exchange-spot) | 现货交易：买卖、订单管理、账户查询、保证金交易 | `2026.3.13` | ✅ 可用 |
-| [bitmart-exchange-futures](#-bitmart-exchange-futures) | USDT 永续合约：开平仓、止盈止损、计划委托、杠杆管理 | `2026.3.13` | ✅ 可用 |
-| [bitmart-wallet-ai](#-bitmart-wallet-ai) | Web3 钱包：代币搜索、行情数据、聪明钱追踪、地址余额查询、地址近期交易、兑换报价（无需 API Key） | `2026.3.17` | ✅ 可用 |
+| [bitmart-exchange-spot](#-bitmart-exchange-spot) | 现货交易：买卖、订单管理、账户查询、保证金交易 | `2026.3.23` | ✅ 可用 |
+| [bitmart-exchange-futures](#-bitmart-exchange-futures) | USDT 永续合约：开平仓、止盈止损、计划委托、杠杆管理 | `2026.3.23` | ✅ 可用 |
+| [bitmart-wallet-ai](#-bitmart-wallet-ai) | Web3 钱包：代币搜索、行情数据、聪明钱追踪、地址余额查询、地址近期交易、兑换报价（无需 API Key） | `2026.3.23` | ✅ 可用 |
 
 ---
 
@@ -159,7 +159,6 @@ BitMart Web3 钱包能力，覆盖 5 条链（Solana、BSC、Ethereum、Arbitrum
 bitmart-skills/
 ├── README.md                              # 英文 README
 ├── README_ZH_CN.md                        # 中文 README
-├── .gitignore
 └── skills/
     ├── bitmart-exchange-spot/             # 现货交易 Skill
     │   ├── SKILL.md

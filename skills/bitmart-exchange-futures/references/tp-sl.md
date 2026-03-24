@@ -30,6 +30,7 @@ TP/SL orders automatically close a position when the price reaches a specified t
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/position-v2?symbol=BTCUSDT'
 ```
 
@@ -92,6 +93,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","type":"take_profit","side":3,"trigger_price":"72000","executive_price":"0","price_type":1,"plan_category":2}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-tp-sl-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -106,6 +108,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","type":"stop_loss","side":3,"trigger_price":"64000","executive_price":"0","price_type":1,"plan_category":2}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-tp-sl-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -117,6 +120,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-tp-sl-
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/current-plan-order?symbol=BTCUSDT&plan_type=profit_loss'
 ```
 
@@ -151,6 +155,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"ETHUSDT","type":"take_profit","side":2,"trigger_price":"62000","executive_price":"0","price_type":1,"plan_category":2}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-tp-sl-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -165,6 +170,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"ETHUSDT","type":"stop_loss","side":2,"trigger_price":"70000","executive_price":"0","price_type":1,"plan_category":2}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-tp-sl-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -228,6 +234,7 @@ When using `plan_category=1` (partial position) with limit execution, provide `e
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/current-plan-order?symbol=BTCUSDT&plan_type=profit_loss'
 ```
 
@@ -238,6 +245,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"45678901234567890","trigger_price":"74000","price_type":1,"plan_category":2}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-tp-sl-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \

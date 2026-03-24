@@ -8,6 +8,7 @@
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/position-v2?symbol=BTCUSDT'
 ```
 
@@ -78,6 +79,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":3,"type":"market","size":100}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -100,6 +102,7 @@ Expected response:
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/position-v2?symbol=BTCUSDT'
 ```
 
@@ -109,6 +112,7 @@ Also check the fill details:
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/order?symbol=BTCUSDT&order_id=23456789012345680'
 ```
 

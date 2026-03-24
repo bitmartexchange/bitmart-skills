@@ -25,7 +25,7 @@ Plan orders are conditional/trigger orders that remain dormant until a specified
 ### Step 1: Validate parameters
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/details?symbol=BTCUSDT'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/details?symbol=BTCUSDT'
 ```
 
 Check current price and validate trigger price is reasonable. If current price is 67000 and trigger is 65000, the order will wait until price drops to 65000.
@@ -57,6 +57,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":1,"trigger_price":"65000","type":"market","size":10,"leverage":"10","open_type":"cross","price_way":2,"price_type":1}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-plan-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -79,6 +80,7 @@ Expected response:
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/current-plan-order?symbol=BTCUSDT'
 ```
 
@@ -108,6 +110,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":1,"trigger_price":"72000","type":"limit","executive_price":"72100","size":10,"leverage":"10","open_type":"cross","price_way":1,"price_type":1,"mode":1}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-plan-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -125,6 +128,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-plan-o
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/current-plan-order?symbol=BTCUSDT&plan_type=plan&limit=50'
 ```
 
@@ -150,6 +154,7 @@ Active Plan Orders (BTCUSDT):
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/current-plan-order?symbol=BTCUSDT&plan_type=plan'
 ```
 
@@ -162,6 +167,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"34567890123456789","type":"market","trigger_price":"64000","price_type":1}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-plan-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -194,6 +200,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"34567890123456789"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-plan-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -205,6 +212,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-plan-o
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/current-plan-order?symbol=BTCUSDT&plan_type=plan'
 ```
 

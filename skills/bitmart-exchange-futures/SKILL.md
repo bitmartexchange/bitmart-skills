@@ -2,7 +2,7 @@
 name: bitmart-exchange-futures
 description: "Use when the user asks about BitMart futures or contract trading, including opening/closing positions, setting leverage, placing plan (conditional) orders, take-profit/stop-loss, trailing orders, checking futures positions, managing futures account, sub-account transfers, affiliate/rebate queries, or simulated trading. Do NOT use for spot trading (use bitmart-exchange-spot)."
 homepage: "https://www.bitmart.com"
-metadata: {"author":"bitmart","version":"2026.3.13","sdk_version":"1.4.0","updated":"2026-03-13"}
+metadata: {"author":"bitmart","version":"2026.3.23","sdk_version":"1.4.0","updated":"2026-03-23"}
 ---
 
 # BitMart Futures Trading
@@ -126,6 +126,7 @@ signature = HMAC-SHA256(secret_key, message) → hex string
 | `X-BM-KEY` | API key |
 | `X-BM-SIGN` | Hex-encoded HMAC-SHA256 signature |
 | `X-BM-TIMESTAMP` | Current UTC timestamp in milliseconds |
+| `User-Agent` | `bitmart-skills/futures/v2026.3.23` — SDK source identifier for analytics |
 
 ---
 
@@ -253,13 +254,14 @@ If rate limited (HTTP 429), wait for the reset period before retrying.
 ### Example 1: Get BTC contract details (no auth)
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/details?symbol=BTCUSDT'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/details?symbol=BTCUSDT'
 ```
 
 ### Example 2: Get futures positions (KEYED)
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/position?symbol=BTCUSDT'
 ```
 
@@ -270,6 +272,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":1,"type":"market","size":1,"leverage":"10","open_type":"cross"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -462,6 +465,8 @@ BitMart API is behind Cloudflare CDN. If you receive HTTP 403/503 and the respon
 3. Wait 30-60 seconds before retrying
 4. If running from a cloud server or VPN, the IP may have low reputation — try from a different network
 5. Do not auto-retry more than 3 times — inform the user if the issue persists
+
+> **Cloudflare 1010:** Non-curl HTTP clients with default bot-like User-Agent strings (e.g., `Python-urllib`, `Go-http-client`) may receive HTTP 403 / error 1010. Always send the `User-Agent: bitmart-skills/futures/v2026.3.23` header from your HTTP library — do not rely on the library default.
 
 ---
 

@@ -17,7 +17,7 @@
 | symbol | String | No | Contract symbol, e.g. `BTCUSDT`. Omit for all contracts |
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/details?symbol=BTCUSDT'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/details?symbol=BTCUSDT'
 ```
 
 **Response:**
@@ -109,7 +109,7 @@ curl -s 'https://api-cloud-v2.bitmart.com/contract/public/details?symbol=BTCUSDT
 | symbol | String | Yes | Contract symbol, e.g. `BTCUSDT` |
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/depth?symbol=BTCUSDT'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/depth?symbol=BTCUSDT'
 ```
 
 **Response:**
@@ -147,7 +147,7 @@ curl -s 'https://api-cloud-v2.bitmart.com/contract/public/depth?symbol=BTCUSDT'
 | limit | Long | No | Number of trades, default 50, max 100 |
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/market-trade?symbol=BTCUSDT&limit=5'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/market-trade?symbol=BTCUSDT&limit=5'
 ```
 
 **Response:**
@@ -190,7 +190,7 @@ curl -s 'https://api-cloud-v2.bitmart.com/contract/public/market-trade?symbol=BT
 | symbol | String | Yes | Contract symbol, e.g. `BTCUSDT` |
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/funding-rate?symbol=BTCUSDT'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/funding-rate?symbol=BTCUSDT'
 ```
 
 **Response:**
@@ -234,7 +234,7 @@ curl -s 'https://api-cloud-v2.bitmart.com/contract/public/funding-rate?symbol=BT
 | limit | String | No | Records per page, default 100, max 100 |
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/funding-rate-history?symbol=BTCUSDT&limit=5'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/funding-rate-history?symbol=BTCUSDT&limit=5'
 ```
 
 **Response:**
@@ -274,7 +274,7 @@ curl -s 'https://api-cloud-v2.bitmart.com/contract/public/funding-rate-history?s
 | end_time | Long | Yes | End timestamp in **seconds** |
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/kline?symbol=BTCUSDT&step=60&start_time=1709942400&end_time=1709971200'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/kline?symbol=BTCUSDT&step=60&start_time=1709942400&end_time=1709971200'
 ```
 
 **Response:**
@@ -318,7 +318,7 @@ curl -s 'https://api-cloud-v2.bitmart.com/contract/public/kline?symbol=BTCUSDT&s
 | end_time | Long | Yes | End timestamp in **seconds** |
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/markprice-kline?symbol=BTCUSDT&step=60&start_time=1709942400&end_time=1709971200'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/markprice-kline?symbol=BTCUSDT&step=60&start_time=1709942400&end_time=1709971200'
 ```
 
 **Response:**
@@ -359,7 +359,7 @@ curl -s 'https://api-cloud-v2.bitmart.com/contract/public/markprice-kline?symbol
 | symbol | String | Yes | Contract symbol, e.g. `BTCUSDT` |
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/open-interest?symbol=BTCUSDT'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/open-interest?symbol=BTCUSDT'
 ```
 
 **Response:**
@@ -396,7 +396,7 @@ curl -s 'https://api-cloud-v2.bitmart.com/contract/public/open-interest?symbol=B
 | symbol | String | No | Contract symbol, e.g. `BTCUSDT`. Omit for all |
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/leverage-bracket?symbol=BTCUSDT'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/leverage-bracket?symbol=BTCUSDT'
 ```
 
 **Response:**
@@ -446,6 +446,7 @@ curl -s 'https://api-cloud-v2.bitmart.com/contract/public/leverage-bracket?symbo
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/assets-detail'
 ```
 
@@ -488,6 +489,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/trade-fee-rate?symbol=BTCUSDT'
 ```
 
@@ -519,6 +521,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/position?symbol=BTCUSDT'
 ```
 
@@ -589,6 +592,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/position-v2?symbol=BTCUSDT'
 ```
 
@@ -654,6 +658,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/position-risk?symbol=BTCUSDT'
 ```
 
@@ -705,6 +710,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/get-position-mode'
 ```
 
@@ -740,6 +746,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/transaction-history?symbol=BTCUSDT&flow_type=2&page_size=10'
 ```
 
@@ -805,6 +812,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":1,"type":"market","size":1,"leverage":"10","open_type":"cross"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -818,6 +826,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":4,"type":"limit","price":"70000","size":10,"leverage":"20","open_type":"isolated","mode":1,"preset_take_profit_price":"68000","preset_stop_loss_price":"72000","preset_take_profit_price_type":1,"preset_stop_loss_price_type":1}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -858,6 +867,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"23456789012345678"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -884,6 +894,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-orders' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -914,6 +925,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":23456789012345678,"price":"66500"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-limit-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -946,6 +958,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","timeout":60}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-all-after' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -977,6 +990,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","leverage":"20","open_type":"cross"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-leverage' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1010,6 +1024,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"position_mode":"hedge_mode"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/set-position-mode' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1046,6 +1061,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"currency":"USDT","amount":"1000","type":"spot_to_contract"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/v1/transfer-contract' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1093,6 +1109,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":1,"type":"market","size":10,"leverage":"10","open_type":"cross","trigger_price":"65000","price_way":2,"price_type":1}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-plan-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1124,6 +1141,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"34567890123456789"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-plan-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1155,6 +1173,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"34567890123456789","type":"market","trigger_price":"64000","price_type":1}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-plan-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1196,6 +1215,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","type":"take_profit","side":3,"trigger_price":"72000","executive_price":"71900","price_type":1,"plan_category":2}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-tp-sl-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1209,6 +1229,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","type":"stop_loss","side":2,"trigger_price":"72000","executive_price":"72100","price_type":1}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-tp-sl-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1251,6 +1272,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"45678901234567890","trigger_price":"73000","price_type":1}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-tp-sl-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1287,6 +1309,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"23456789012345678","preset_take_profit_price":"73000","preset_stop_loss_price":"64000","preset_take_profit_price_type":1,"preset_stop_loss_price_type":1}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/modify-preset-plan-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1326,6 +1349,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":3,"leverage":"10","open_type":"cross","size":10,"activation_price":"72000","callback_rate":"2","activation_price_type":1}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-trail-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1361,6 +1385,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","order_id":"56789012345678901"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-trail-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1388,6 +1413,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/cancel-trail-
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/order?symbol=BTCUSDT&order_id=23456789012345678'
 ```
 
@@ -1463,6 +1489,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/order-history?symbol=BTCUSDT'
 ```
 
@@ -1493,6 +1520,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/get-open-orders?symbol=BTCUSDT&limit=50'
 ```
 
@@ -1515,6 +1543,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/current-plan-order?symbol=BTCUSDT&limit=50'
 ```
 
@@ -1578,6 +1607,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/trades?symbol=BTCUSDT'
 ```
 
@@ -1641,6 +1671,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"page":1,"limit":20}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/v1/transfer-contract-list' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1698,6 +1729,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"requestNo":"550e8400-e29b-41d4-a716-446655440000","subAccount":"mysubuser","amount":"100","currency":"USDT"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/contract/sub-account/main/v1/sub-to-main' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1730,6 +1762,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"requestNo":"550e8400-e29b-41d4-a716-446655440001","subAccount":"mysubuser","amount":"100","currency":"USDT"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/contract/sub-account/main/v1/main-to-sub' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1763,6 +1796,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"requestNo":"550e8400-e29b-41d4-a716-446655440002","amount":"100","currency":"USDT"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/contract/sub-account/sub/v1/sub-to-main' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1792,6 +1826,7 @@ curl -s -X POST 'https://api-cloud-v2.bitmart.com/account/contract/sub-account/s
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/account/contract/sub-account/main/v1/wallet?subAccount=mysubuser'
 ```
 
@@ -1834,6 +1869,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/account/contract/sub-account/main/v1/transfer-list?subAccount=mysubuser&limit=20'
 ```
 
@@ -1878,6 +1914,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/account/contract/sub-account/v1/transfer-history?limit=20'
 ```
 
@@ -1933,6 +1970,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/affiliate/rebate-list?page=1&size=10&currency=USDT'
 ```
 
@@ -1982,6 +2020,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/affiliate/trade-list?user_id=123456&type=1&page=1&size=10'
 ```
 
@@ -2045,6 +2084,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/affiliate/rebate-user?cid=123456&start_time=1706745600&end_time=1709251200'
 ```
 
@@ -2091,6 +2131,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/affiliate/rebate-api?cid=123456&start_time=1706745600&end_time=1709251200'
 ```
 
@@ -2125,6 +2166,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/affiliate/invite-check?cid=123456'
 ```
 
@@ -2161,6 +2203,7 @@ curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/affiliate/rebate-inviteUser?start_time=1706745600&end_time=1709251200&page=1&size=10'
 ```
 
@@ -2213,6 +2256,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://demo-api-cloud-v2.bitmart.com/contract/private/claim' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -2252,7 +2296,7 @@ curl -s -X POST 'https://demo-api-cloud-v2.bitmart.com/contract/private/claim' \
 No parameters required.
 
 ```bash
-curl -s 'https://api-cloud.bitmart.com/system/time'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud.bitmart.com/system/time'
 ```
 
 **Response:**
@@ -2282,7 +2326,7 @@ curl -s 'https://api-cloud.bitmart.com/system/time'
 No parameters required.
 
 ```bash
-curl -s 'https://api-cloud.bitmart.com/system/service'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud.bitmart.com/system/service'
 ```
 
 **Response:**

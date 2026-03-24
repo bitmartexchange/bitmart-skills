@@ -102,7 +102,7 @@
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/quotation/v3/ticker?symbol=BTC_USDT"
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/quotation/v3/ticker?symbol=BTC_USDT"
 ```
 
 **Response:**
@@ -161,7 +161,7 @@ curl -s "https://api-cloud.bitmart.com/spot/quotation/v3/ticker?symbol=BTC_USDT"
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/quotation/v3/tickers"
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/quotation/v3/tickers"
 ```
 
 **Response:**
@@ -214,7 +214,7 @@ curl -s "https://api-cloud.bitmart.com/spot/quotation/v3/tickers"
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/quotation/v3/books?symbol=BTC_USDT&limit=5"
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/quotation/v3/books?symbol=BTC_USDT&limit=5"
 ```
 
 **Response:**
@@ -272,7 +272,7 @@ curl -s "https://api-cloud.bitmart.com/spot/quotation/v3/books?symbol=BTC_USDT&l
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/quotation/v3/trades?symbol=BTC_USDT&limit=3"
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/quotation/v3/trades?symbol=BTC_USDT&limit=3"
 ```
 
 **Response:**
@@ -336,7 +336,7 @@ curl -s "https://api-cloud.bitmart.com/spot/quotation/v3/trades?symbol=BTC_USDT&
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/quotation/v3/klines?symbol=BTC_USDT&step=60&limit=3"
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/quotation/v3/klines?symbol=BTC_USDT&step=60&limit=3"
 ```
 
 **Response:**
@@ -387,7 +387,7 @@ curl -s "https://api-cloud.bitmart.com/spot/quotation/v3/klines?symbol=BTC_USDT&
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/quotation/v3/lite-klines?symbol=BTC_USDT&step=15&limit=2"
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/quotation/v3/lite-klines?symbol=BTC_USDT&step=15&limit=2"
 ```
 
 **Response:**
@@ -429,7 +429,7 @@ curl -s "https://api-cloud.bitmart.com/spot/quotation/v3/lite-klines?symbol=BTC_
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/v1/symbols/details"
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/v1/symbols/details"
 ```
 
 **Response:**
@@ -494,7 +494,7 @@ curl -s "https://api-cloud.bitmart.com/spot/v1/symbols/details"
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/v1/symbols"
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/v1/symbols"
 ```
 
 **Response:**
@@ -535,7 +535,7 @@ curl -s "https://api-cloud.bitmart.com/spot/v1/symbols"
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/v1/currencies"
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/v1/currencies"
 ```
 
 **Response:**
@@ -593,7 +593,7 @@ curl -s "https://api-cloud.bitmart.com/spot/v1/currencies"
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/account/v1/wallet" \
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/account/v1/wallet" \
   -H "X-BM-KEY: $BITMART_API_KEY"
 ```
 
@@ -651,7 +651,7 @@ curl -s "https://api-cloud.bitmart.com/account/v1/wallet" \
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/v1/wallet" \
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/v1/wallet" \
   -H "X-BM-KEY: $BITMART_API_KEY"
 ```
 
@@ -707,7 +707,7 @@ curl -s "https://api-cloud.bitmart.com/spot/v1/wallet" \
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/v1/trade_fee?symbol=BTC_USDT" \
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/v1/trade_fee?symbol=BTC_USDT" \
   -H "X-BM-KEY: $BITMART_API_KEY"
 ```
 
@@ -751,7 +751,7 @@ curl -s "https://api-cloud.bitmart.com/spot/v1/trade_fee?symbol=BTC_USDT" \
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/v1/user_fee" \
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/v1/user_fee" \
   -H "X-BM-KEY: $BITMART_API_KEY"
 ```
 
@@ -811,7 +811,7 @@ curl -s "https://api-cloud.bitmart.com/spot/v1/user_fee" \
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/v1/margin/isolated/account?symbol=BTC_USDT" \
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/v1/margin/isolated/account?symbol=BTC_USDT" \
   -H "X-BM-KEY: $BITMART_API_KEY"
 ```
 
@@ -904,7 +904,7 @@ curl -s "https://api-cloud.bitmart.com/spot/v1/margin/isolated/account?symbol=BT
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/v1/margin/isolated/pairs?symbol=BTC_USDT" \
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/v1/margin/isolated/pairs?symbol=BTC_USDT" \
   -H "X-BM-KEY: $BITMART_API_KEY"
 ```
 
@@ -981,7 +981,7 @@ curl -s "https://api-cloud.bitmart.com/spot/v1/margin/isolated/pairs?symbol=BTC_
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/v1/margin/isolated/borrow_record?symbol=BTC_USDT&N=10" \
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/v1/margin/isolated/borrow_record?symbol=BTC_USDT&N=10" \
   -H "X-BM-KEY: $BITMART_API_KEY"
 ```
 
@@ -1046,7 +1046,7 @@ curl -s "https://api-cloud.bitmart.com/spot/v1/margin/isolated/borrow_record?sym
 **Example:**
 
 ```bash
-curl -s "https://api-cloud.bitmart.com/spot/v1/margin/isolated/repay_record?symbol=BTC_USDT&N=10" \
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" "https://api-cloud.bitmart.com/spot/v1/margin/isolated/repay_record?symbol=BTC_USDT&N=10" \
   -H "X-BM-KEY: $BITMART_API_KEY"
 ```
 
@@ -1129,6 +1129,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v2/submit_order" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1188,6 +1189,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/submit_order" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1253,6 +1255,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/batch_orders" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1312,6 +1315,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v3/cancel_order" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1328,6 +1332,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v3/cancel_order" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1380,6 +1385,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/cancel_orders" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1438,6 +1444,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/cancel_all" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1493,6 +1500,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/order" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1578,6 +1586,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/client-order" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1646,6 +1655,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/open-orders" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1718,6 +1728,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/history-orders" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1790,6 +1801,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/trades" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1874,6 +1886,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v4/query/order-trades" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1942,6 +1955,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/isolated/borrow" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -1995,6 +2009,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/isolated/repay" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -2049,6 +2064,7 @@ MESSAGE="${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}"
 SIGN=$(echo -n "$MESSAGE" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 
 curl -s -X POST "https://api-cloud.bitmart.com/spot/v1/margin/isolated/transfer" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -2126,7 +2142,7 @@ Spot business error codes are endpoint/version specific. Do **not** assume the s
 No parameters required.
 
 ```bash
-curl -s 'https://api-cloud.bitmart.com/system/time'
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" 'https://api-cloud.bitmart.com/system/time'
 ```
 
 **Response:**
@@ -2156,7 +2172,7 @@ curl -s 'https://api-cloud.bitmart.com/system/time'
 No parameters required.
 
 ```bash
-curl -s 'https://api-cloud.bitmart.com/system/service'
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" 'https://api-cloud.bitmart.com/system/service'
 ```
 
 **Response:**

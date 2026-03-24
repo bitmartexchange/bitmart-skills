@@ -152,6 +152,7 @@ Test your credentials with a simple balance query.
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   'https://api-cloud.bitmart.com/account/v1/wallet' | python3 -m json.tool
 ```
 
@@ -175,6 +176,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v4/query/open-orders' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \

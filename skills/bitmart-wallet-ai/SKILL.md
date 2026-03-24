@@ -2,7 +2,7 @@
 name: bitmart-wallet-ai
 description: "BitMart Web3 Wallet Skills (12 endpoints): Token Search, Chain Details, Token Info, K-Line Chart, Hot Token Ranking, xStock Ranking, Smart Money P&L Ranking, Smart Money Address Analysis/Holdings/Transaction History, Address Balance, Address Recent Transactions, Swap Quote, Batch Price. All APIs do not require API Key. Use when users ask about token prices, market data, smart money tracking, asset queries, recent transactions, or token swap quotes."
 homepage: "https://www.bitmart.com"
-metadata: {"author":"bitmart","version":"2026.3.17","updated":"2026-03-17"}
+metadata: {"author":"bitmart","version":"2026.3.23","updated":"2026-03-23"}
 ---
 
 # BitMart Web3 Wallet AI Skills
@@ -24,15 +24,16 @@ This document describes the BitMart Web3 Wallet capabilities exposed as AI skill
 - **Base URL**: `https://api-cloud.bitmart.com`
 - **Authentication**: No API Key required, send HTTP requests directly
 - **Request Method**: POST, JSON body
+- **Required Header**: `User-Agent: bitmart-skills/wallet/v2026.3.23` (SDK source identifier for analytics)
 - **Response Format**: `{ "success": bool, "code": "string", "message": "string", "data": ... }`
-- **Request Limit**: 15 requests per second per IP，or you would be rate limited
+- **Request Limit**: 15 requests per second per IP, or you would be rate limited
 
 | Endpoint | Path | Description |
 | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------ |
 | token-search | `/web3/chain-web3-base-data-maintainer/v1/token/search` | Fuzzy search tokens by name or symbol |
 | chain-detail | `/web3/chain-web3-base-data-maintainer/v1/chain/by-chainId` | Query chain details by platform chain ID |
 | token-info | `/web3/chain-web3-base-data-maintainer/v1/token/query/by/token-id` | Get token details by platform token ID |
-| kline | `/web3/chain-web3-market/v1/api/market/kline/history` | Token K-line data (Solana only) |
+| kline | `/web3/chain-web3-market/v1/api/market/kline/history` | Token K-line data **(Solana chain only)** |
 | hot-ranking | `/web3/chain-web3-market/v1/api/market/trending/hot` | Hot token trending ranking |
 | xstock-ranking | `/web3/chain-web3-market/v1/api/market/rank/xstocks` | US stock mapped token ranking |
 | smart-money-rank | `/web3/chain-web3-smart-money/v1/api/smart-money/list` | Smart money 7-day P&L ranking |
@@ -355,8 +356,10 @@ Get token Swap price quote. **Quote only, does not execute transaction.**
 Batch query token prices.
 
 **Note:**
-- For native tokens (e.g., SOL, BNB, ETH, ARB, BASE), use chain IDs (e.g., 2001, 2002, 2003, 2004, 2007) as `tokenIds`
-- For contract tokens, use the specific tokenId (obtained via token-search first)
+- `tokenIds` accepts two types of identifiers:
+  - **Native tokens**: use the `chainId` value as the identifier (e.g., `2001` for SOL, `2002` for BNB, `2003` for ETH). This is a special convention — `chainId` doubles as `tokenId` for native tokens.
+  - **Contract tokens**: use the platform-internal `tokenId` obtained from `token-search` (e.g., `"224987722"` for a specific token).
+- Do not confuse `chainId` (chain identifier) with `tokenId` (token identifier) — they happen to share the same value only for native tokens.
 
 **Request:**
 ```json
@@ -368,7 +371,7 @@ Batch query token prices.
 
 | Parameter | Type | Required | Description |
 | ------------ | ------- | -------- | --------------------------------------------- |
-| tokenIds | array | Yes | Platform internal chain ID array (2001=Solana, 2002=BSC, 2003=Ethereum, 2004=Arbitrum, 2007=Base) |
+| tokenIds | array | Yes | Array of token identifiers. For **native tokens**, use the chainId as tokenId (e.g., `2001`=SOL, `2002`=BNB, `2003`=ETH). For **contract tokens**, use the platform tokenId from `token-search`. |
 | latestOnly | boolean | No | Whether to return only latest price, default true |
 
 **Response Key Fields:**
@@ -489,6 +492,8 @@ Get hot token / US stock mapped token ranking.
 | check | Audit/check status |
 | source | Data source |
 | prices | Historical price points array |
+
+> **Note:** The `hot-ranking` and `xstock-ranking` endpoints may ignore the `pageSize` parameter in the request and return all available results. Do not rely on `pageSize` to limit the response — always handle variable-length result arrays.
 
 ---
 
@@ -644,6 +649,108 @@ Get smart money address analysis, holdings, and transaction history.
 When the user-specified token is ambiguous and there are multiple tokens with exactly matching names, **you must ask the user** to confirm which token. Clearly state each token's chain name and token type.
 
 ---
+
+## Error Handling
+
+### Response Format
+
+All endpoints return the same response structure:
+
+```json
+{
+  "success": false,
+  "code": "error_code",
+  "message": "Human-readable error description",
+  "data": null
+}
+```
+
+When `success` is `false`, check the `code` and `message` fields for details.
+
+### Common Error Scenarios
+
+| Scenario | Typical Response | Action |
+|----------|-----------------|--------|
+| Invalid/missing parameter | `success: false` with descriptive message | Check required fields and types |
+| Token not found | Empty `data` or `data: null` | Verify tokenId/address via `token-search` first |
+| Chain not supported | Error in `message` | Check supported chains (2001-2004, 2007) |
+| Rate limited (>15 req/s) | HTTP 429 or error response | Back off, wait 5 seconds, retry (max 3 times) |
+| Cloudflare interception | HTTP 403/503 with HTML body (not JSON) | This is a Cloudflare WAF block, not an API error. Do not parse as JSON. Check IP reputation (VPN/cloud IPs may be challenged). Wait 30-60 seconds and retry. Do not auto-retry more than 3 times. |
+| Server error | HTTP 500+ | Retry once after 2 seconds; if persistent, inform user |
+
+### Cloudflare Handling
+
+BitMart API is behind Cloudflare CDN. If you receive HTTP 403/503 and the response body contains "Cloudflare", "cf-", or an HTML challenge page (instead of JSON):
+
+1. This is a Cloudflare interception, not a BitMart API error — do not parse as JSON
+2. Check if too many requests were sent in a short window
+3. Wait 30-60 seconds before retrying
+4. Do not auto-retry more than 3 times
+5. If persistent, suggest the user check their network environment (VPN, proxy, cloud IP)
+
+**Important — Cloudflare Error 1010 (Non-curl clients):**
+
+Cloudflare may block requests from HTTP libraries that use default "bot-like" User-Agent strings (e.g., `Python-urllib/3.x`, `Go-http-client/1.1`, `Java/...`). The symptom is HTTP 403 with error code 1010.
+
+This does **not** affect `curl` (which sends a recognized User-Agent by default), but **will** affect:
+- Python `urllib` / `urllib3` without custom User-Agent
+- Go `net/http` default client
+- Any HTTP library that sends a generic or empty User-Agent
+
+**Solution:** Always include the `User-Agent` header in every request (e.g., `bitmart-skills/wallet/v2026.3.23`). Ensure your HTTP client actually sends this header and does not override it with a default value.
+
+```python
+# Python requests — correct
+import requests
+r = requests.post(url, json=body, headers={"User-Agent": "bitmart-skills/wallet/v2026.3.23"})
+
+# Python urllib — correct
+import urllib.request
+req = urllib.request.Request(url, data=json.dumps(body).encode(),
+    headers={"Content-Type": "application/json", "User-Agent": "bitmart-skills/wallet/v2026.3.23"})
+resp = urllib.request.urlopen(req)
+```
+
+---
+
+## curl Examples
+
+### Public endpoint (token-search)
+
+```bash
+curl -s -X POST 'https://api-cloud.bitmart.com/web3/chain-web3-base-data-maintainer/v1/token/search' \
+  -H "Content-Type: application/json" \
+  -H "User-Agent: bitmart-skills/wallet/v2026.3.23" \
+  -d '{"keyword":"TRUMP","chainId":2001}'
+```
+
+### Public endpoint (batch-price — native tokens)
+
+```bash
+curl -s -X POST 'https://api-cloud.bitmart.com/web3/chain-web3-price/api/v1/token/price/batch' \
+  -H "Content-Type: application/json" \
+  -H "User-Agent: bitmart-skills/wallet/v2026.3.23" \
+  -d '{"tokenIds":[2001,2002,2003],"latestOnly":true}'
+```
+
+### Public endpoint (address-balance)
+
+```bash
+curl -s -X POST 'https://api-cloud.bitmart.com/web3/chain-web3-assetmanager/v1/eoa/balance/list' \
+  -H "Content-Type: application/json" \
+  -H "User-Agent: bitmart-skills/wallet/v2026.3.23" \
+  -d '{"address":"0x4396e479fe8270487f301b7c5cc92e8cd59ef91a","chainId":2002,"pageIndex":0,"pageSize":100}'
+```
+
+### Public endpoint (swap-quote)
+
+```bash
+curl -s -X POST 'https://api-cloud.bitmart.com/web3/chain-web3-price/api/v1/token/price/swap-quote' \
+  -H "Content-Type: application/json" \
+  -H "User-Agent: bitmart-skills/wallet/v2026.3.23" \
+  -d '{"tokenInAddress":"","tokenOutAddress":"0x55d398326f99059ff775485246999027b3197955","tokenInId":"2002","tokenOutId":"1169983","amountIn":1,"tokenInDecimals":18,"tokenOutDecimals":18,"slippage":0.1,"fromChainId":2002,"toChainId":2002}'
+```
+
 
 ## Other Rules
 

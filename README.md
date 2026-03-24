@@ -14,9 +14,9 @@ These skills are designed to work with any AI agent framework. Whether you're us
 
 | Skill | Description | Version | Status |
 |-------|-------------|---------|--------|
-| [bitmart-exchange-spot](#-bitmart-exchange-spot) | Spot trading: buy/sell, order management, account queries, margin trading | `2026.3.13` | ✅ Active |
-| [bitmart-exchange-futures](#-bitmart-exchange-futures) | USDT perpetual futures: open/close position, TP/SL, plan orders, leverage | `2026.3.13` | ✅ Active |
-| [bitmart-wallet-ai](#-bitmart-wallet-ai) | Web3 Wallet: token search, market data, smart money tracking, address balances, recent transactions, swap quotes (no API key required) | `2026.3.17` | ✅ Active |
+| [bitmart-exchange-spot](#-bitmart-exchange-spot) | Spot trading: buy/sell, order management, account queries, margin trading | `2026.3.23` | ✅ Active |
+| [bitmart-exchange-futures](#-bitmart-exchange-futures) | USDT perpetual futures: open/close position, TP/SL, plan orders, leverage | `2026.3.23` | ✅ Active |
+| [bitmart-wallet-ai](#-bitmart-wallet-ai) | Web3 Wallet: token search, market data, smart money tracking, address balances, recent transactions, swap quotes (no API key required) | `2026.3.23` | ✅ Active |
 
 ---
 
@@ -159,7 +159,6 @@ Help me install this skill: https://github.com/bitmartexchange/bitmart-skills
 bitmart-skills/
 ├── README.md                              # English README
 ├── README_ZH_CN.md                        # Chinese README
-├── .gitignore
 └── skills/
     ├── bitmart-exchange-spot/             # Spot trading skill
     │   ├── SKILL.md

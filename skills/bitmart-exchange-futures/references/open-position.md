@@ -8,6 +8,7 @@
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/assets-detail'
 ```
 
@@ -21,7 +22,7 @@ Would you like to transfer USDT from your spot wallet?
 ### Step 2: Pre-flight — Check contract details
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/details?symbol=BTCUSDT'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/details?symbol=BTCUSDT'
 ```
 
 Validate:
@@ -34,7 +35,7 @@ Validate:
 ### Step 3: Pre-flight — Check leverage brackets
 
 ```bash
-curl -s 'https://api-cloud-v2.bitmart.com/contract/public/leverage-bracket?symbol=BTCUSDT'
+curl -s -H "User-Agent: bitmart-skills/futures/v2026.3.23" 'https://api-cloud-v2.bitmart.com/contract/public/leverage-bracket?symbol=BTCUSDT'
 ```
 
 Verify the requested leverage (10x) is available for the position size. If position size exceeds the tier limit, warn the user:
@@ -50,6 +51,7 @@ Before setting leverage or submitting an order, check for existing positions:
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/position-v2?symbol=BTCUSDT'
 ```
 
@@ -88,6 +90,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","leverage":"10","open_type":"cross"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-leverage' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -101,6 +104,7 @@ Query the account-wide `position_mode` only when you need a mode-sensitive decis
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/get-position-mode'
 ```
 
@@ -112,6 +116,7 @@ Read the current account-wide position mode first:
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/get-open-orders'
 ```
 
@@ -125,6 +130,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"position_mode":"hedge_mode"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/set-position-mode' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -169,6 +175,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTCUSDT","side":1,"type":"market","size":100,"leverage":"10","open_type":"cross"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud-v2.bitmart.com/contract/private/submit-order' \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -191,6 +198,7 @@ Expected response:
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/futures/v2026.3.23" \
   'https://api-cloud-v2.bitmart.com/contract/private/position-v2?symbol=BTCUSDT'
 ```
 

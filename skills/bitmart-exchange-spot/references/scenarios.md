@@ -7,7 +7,7 @@
 ### Step 1: Get current ticker price
 
 ```bash
-curl -s 'https://api-cloud.bitmart.com/spot/quotation/v3/ticker?symbol=BTC_USDT'
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" 'https://api-cloud.bitmart.com/spot/quotation/v3/ticker?symbol=BTC_USDT'
 ```
 
 Expected response:
@@ -28,6 +28,7 @@ Expected response:
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   'https://api-cloud.bitmart.com/spot/v1/wallet'
 ```
 
@@ -53,6 +54,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","side":"buy","type":"market","notional":"100"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v2/submit_order' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -78,6 +80,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"orderId":"12345678901234567"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v4/query/order' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -102,7 +105,7 @@ Verify `state` is `"filled"`. Report to user: filled size, average price, and to
 ### Step 1: Get current price to validate limit price
 
 ```bash
-curl -s 'https://api-cloud.bitmart.com/spot/quotation/v3/ticker?symbol=ETH_USDT'
+curl -s -H "User-Agent: bitmart-skills/spot/v2026.3.23" 'https://api-cloud.bitmart.com/spot/quotation/v3/ticker?symbol=ETH_USDT'
 ```
 
 Check that the limit price (4000) is reasonable relative to the current market price. Warn the user if it deviates significantly.
@@ -111,6 +114,7 @@ Check that the limit price (4000) is reasonable relative to the current market p
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   'https://api-cloud.bitmart.com/spot/v1/wallet'
 ```
 
@@ -135,6 +139,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"ETH_USDT","side":"sell","type":"limit","size":"0.5","price":"4000"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v2/submit_order' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -149,6 +154,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"orderId":"ORDER_ID"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v4/query/order' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -193,6 +199,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","orderParams":[{"side":"buy","type":"limit","size":"0.001","price":"60000"},{"side":"buy","type":"limit","size":"0.001","price":"59000"},{"side":"buy","type":"limit","size":"0.001","price":"58000"}]}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v4/batch_orders' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -209,6 +216,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"orderId":"ORDER_ID"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v4/query/order' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -236,6 +244,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v4/query/open-orders' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -252,6 +261,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","order_id":"FOUND_ORDER_ID"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v3/cancel_order' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -278,6 +288,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"BTC_USDT","side":"buy","type":"limit","size":"0.001","price":"59500"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v2/submit_order' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -305,6 +316,7 @@ Query the new order to confirm it was placed successfully.
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   'https://api-cloud.bitmart.com/account/v1/wallet?needUsdValuation=true'
 ```
 
@@ -343,6 +355,7 @@ Note: Not financial advice. Values are approximate based on current market price
 
 ```bash
 curl -s -H "X-BM-KEY: $BITMART_API_KEY" \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   'https://api-cloud.bitmart.com/spot/v1/margin/isolated/account?symbol=ETH_USDT'
 ```
 
@@ -367,6 +380,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"ETH_USDT","currency":"USDT","amount":"1000"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v1/margin/isolated/borrow' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -381,6 +395,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"ETH_USDT","side":"buy","type":"market","notional":"1000"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v1/margin/submit_order' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
@@ -397,6 +412,7 @@ TIMESTAMP=$(date +%s000)
 BODY='{"symbol":"ETH_USDT","currency":"USDT","amount":"1000"}'
 SIGN=$(echo -n "${TIMESTAMP}#${BITMART_API_MEMO}#${BODY}" | openssl dgst -sha256 -hmac "$BITMART_API_SECRET" | awk '{print $NF}')
 curl -s -X POST 'https://api-cloud.bitmart.com/spot/v1/margin/isolated/repay' \
+  -H "User-Agent: bitmart-skills/spot/v2026.3.23" \
   -H "Content-Type: application/json" \
   -H "X-BM-KEY: $BITMART_API_KEY" \
   -H "X-BM-SIGN: $SIGN" \
